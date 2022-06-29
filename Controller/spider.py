@@ -17,16 +17,14 @@ def gethtml(url):
     #print(r.data.decode())
     #html=r.data.decode();
     return r.data.decode();
-#reg="ess-data[\w\W]*?http.*?(jpg|gif|png|bmp)"
-reg="ess-data</span>='<[^>]+>(.*?)</[^>]+>"
-html=gethtml("https://www.baidu.com");
-with open("D:/pcode/growpupdaily_api/Asset/test.html") as file_object:
-    contends = file_object.read();
+
+def getphoto(html):
     pattern=re.compile(reg);
-    result=re.findall(pattern,contends);
+    result=re.findall(pattern,html);
     http = urllib3.PoolManager();
     header = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36'} 
     print(result)
+    print(html);
     for res in result:
         r = http.request('GET',
              res,
@@ -34,7 +32,16 @@ with open("D:/pcode/growpupdaily_api/Asset/test.html") as file_object:
              headers=header)
         filename=res.split("/")[-1]
         print(r.status) # 200
-        with open(filename,'wb') as f:
+        with open('F:/图片/test/'+filename,'wb') as f:
             f.write(r.data);
+
+#reg="ess-data[\w\W]*?http.*?(jpg|gif|png|bmp)"
+#reg="ess-data</span>='<[^>]+>(.*?)</[^>]+>"
+reg="<img.*?ess-data='(.*?)'>"
+html=gethtml("");
+# with open("D:/pcode/growpupdaily_api/Asset/test.html") as file_object:
+#     contends = file_object.read();
+#     getphoto(contends);
+getphoto(html);
     
 
