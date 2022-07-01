@@ -4,9 +4,10 @@ import re
 import os
 from queue import Queue
 import time
+import logging
 
 
-#logger = logging.getLogger('flask.app')
+logger = logging.getLogger('flask.app')
 #logger.info('flask.app')
 #from flask import current_app
 #current_app.logger.info('logged by current_app from main')
@@ -20,10 +21,14 @@ def AddUrl(url):
     return "ok";
 
 def Start():
-    isstart=True
+    global isstart;
+    isstart=True;
+    logger.info('启动spider成功')
+    #current_app.logger.info('启动spider成功')
     exec();
 
 def Stop():
+    global isstart;
     isstart=False
 
 def exec():
@@ -34,9 +39,11 @@ def exec():
                 html=gethtml(url)
                 getphoto(html)
                 suclist.append(url)
+                logger.info('下载：'+url+' 成功')
                 #current_app.logger.info('下载：'+url+' 成功')
             except Exception as e:
                 #current_app.logger.info('下载：'+url+'报错：'+ e)
+                logger.info('下载：'+url+'报错：'+str(e))
                 errlist.append(url)
 
         time.sleep(3);

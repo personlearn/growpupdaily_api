@@ -6,6 +6,7 @@ from flask_cors import CORS
 from jinja2 import Undefined
 import threading
 import logging
+from logging.handlers import RotatingFileHandler
 
 from Comm import JsonEncoderCustom
 from Controller import Photo
@@ -113,7 +114,7 @@ def SetLogger():
     # 设置日志的记录等级
     logging.basicConfig(level=logging.DEBUG) # 调试debug级
     # 创建日志记录器，指明日志保存的路径、每个日志文件的最大大小、保存的日志文件个数上限
-    file_log_handler =logging.handlers.RotatingFileHandler("logs/log", maxBytes=1024*1024*100, backupCount=10)
+    file_log_handler =logging.handlers.RotatingFileHandler("logs/log.txt", maxBytes=1024*1024*100, backupCount=10)
     # 创建日志记录的格式 日志等级 输入日志信息的文件名 行数 日志信息
     formatter = logging.Formatter('%(levelname)s %(filename)s:%(lineno)d %(message)s')
     # 为刚创建的日志记录器设置日志记录格式
@@ -124,5 +125,6 @@ def SetLogger():
 if __name__ == '__main__':
     # app.run(host, port, debug, options)
     # 默认值：host="127.0.0.1", port=5000, debug=False
-    #SetLogger()
+    SetLogger()
+    spiderStart()
     app.run(host="0.0.0.0", port=5000)
